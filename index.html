@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dasopedia への招待</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #f5f6fa;
+      color: #1a1d2e;
+      font-family: 'Inter', 'Hiragino Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .card {
+      background: #ffffff;
+      border: 1px solid #e2e4ed;
+      border-radius: 16px;
+      padding: 48px 40px;
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+    }
+    .logo { font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #4f6de0; margin-bottom: 32px; }
+    .icon { font-size: 48px; margin-bottom: 16px; }
+    h1 { font-size: 22px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.02em; }
+    p { font-size: 14px; color: #6b7080; line-height: 1.6; margin-bottom: 28px; }
+    .error { color: #d63b3b; font-size: 14px; }
+    .spinner {
+      width: 32px; height: 32px; border: 3px solid #e2e4ed;
+      border-top-color: #4f6de0; border-radius: 50%;
+      animation: spin 0.8s linear infinite; margin: 0 auto 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">Dasopedia</div>
+    <div id="content">
+      <div class="spinner"></div>
+      <p>招待を確認中...</p>
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    const code   = params.get('code');
+    const content = document.getElementById('content');
+
+    if (!code) {
+      content.innerHTML = `
+        <div class="icon">❌</div>
+        <h1>招待コードがありません</h1>
+        <p class="error">有効な招待リンクからアクセスしてください。</p>`;
+    } else {
+      // コードを引き継いでloginページへリダイレクト
+      const loginUrl = `https://dasopedia.f5.si/login/?code=${encodeURIComponent(code)}&register=1`;
+      content.innerHTML = `
+        <div class="icon">🎉</div>
+        <h1>Dasopediaへようこそ</h1>
+        <p>招待が確認されました。<br>登録ページに移動します...</p>`;
+      setTimeout(() => { window.location.href = loginUrl; }, 1500);
+    }
+  </script>
+</body>
+</html>
